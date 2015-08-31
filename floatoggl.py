@@ -20,6 +20,17 @@ class Datascope(object):
     people = []
     projects = []
 
+    def fetch_people_from_float(self):
+        float_people = float_request("/people/")
+        logging.info("Adding people from Float")
+        for float_person in float_people['people']:
+            if float_person['email'] not in [a.email for a in self.people]:
+                person_obj = Person()
+                person_obj.add_profile_from_float(float_person)
+                self.people.append(person_obj)
+            else:
+                raise NotImplementedError()
+
 
 class Person(object):
     name = ""
@@ -58,14 +69,8 @@ def toggl_request(endpoint):
 
 def main():
     datascope = Datascope()
-    float_people = float_request("/people/")
-    logging.info("Adding people from Float")
-    for float_person in float_people['people']:
-        person_obj = Person()
-        person_obj.add_profile_from_float(float_person)
-        datascope.people.append(person_obj)
-
-    print datascope.people
+    datascope.fetch_people_from_float()
+    print [a.email for a in datascope.people]
     return 0
 
 
