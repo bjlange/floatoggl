@@ -7,7 +7,9 @@ import logging
 import requests
 
 import settings
+
 logging.basicConfig(level=logging.DEBUG)
+
 
 # constants
 
